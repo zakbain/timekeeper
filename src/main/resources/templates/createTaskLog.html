@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -16,30 +16,23 @@
         <div class="col-md-12">
             <form action="#" th:action="@{/addTaskLog}" th:object="${taskLog}" method="post">
                 <div class="row">
-                    <div class="form-group col-md-3">
-                        <label for="taskLogId" class="col-form-label">Id</label>
-                        <input type="text" th:field="*{id}" class="form-control" id="taskLogId" placeholder="Id">
-                        <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label for="taskId" class="col-form-label">Task Id</label>
-                        <input type="text" th:field="*{taskId}" class="form-control" id="taskId" placeholder="Task ID">
-                        <span th:if="${#fields.hasErrors('taskId')}" th:errors="*{taskId}" class="text-danger"></span>
+                        <select th:field="*{task}" id="taskId">
+                            <option th:each="possibleTask : ${tasks}" th:value="${possibleTask.id}" th:text="${possibleTask.name}">
+                            </option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('task')}" th:errors="*{task}" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label for="employeeId" class="col-form-label">Employee Id</label>
                         <input type="text" th:field="*{employeeId}" class="form-control" id="employeeId" placeholder="Employee Id">
                         <span th:if="${#fields.hasErrors('employeeId')}" th:errors="*{employeeId}" class="text-danger"></span>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label for="timeSpent" class="col-form-label">Time Spent</label>
                         <input type="text" th:field="*{timeSpent}" class="form-control" id="timeSpent" placeholder="Time Spent">
                         <span th:if="${#fields.hasErrors('timeSpent')}" th:errors="*{timeSpent}" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inProgress" class="col-form-label">In Progrses</label>
-                        <input type="text" th:field="*{inProgress}" class="form-control" id="inProgress" placeholder="In Progress?">
-                        <span th:if="${#fields.hasErrors('inProgress')}" th:errors="*{inProgress}" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="row">

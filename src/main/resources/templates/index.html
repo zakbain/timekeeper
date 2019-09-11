@@ -29,7 +29,8 @@
                         <th>Employee ID</th>
                         <th>Started On</th>
                         <th>Time Spent</th>
-                        <th>In Progress</th>
+                        <th>Start</th>
+                        <th>Stop</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,9 +40,8 @@
                         <td th:text="${taskLog.employeeId}"></td>
                         <td th:text="${taskLog.startedOn}"></td>
                         <td th:text="${taskLog.timeSpent}"></td>
-                        <td th:text="${taskLog.inProgress}"></td>
-<!--                        <td><a th:href="@{/edit/{id}(id=${event.id})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>-->
-<!--                        <td><a th:href="@{/delete/{id}(id=${event.id})}" class="btn btn-primary"><i class="fas fa-user-times ml-2"></i></a></td>-->
+                        <td><a th:href="@{/startTimer/{id}(id=${taskLog.id})}" class="btn btn-primary"><i class="fas fa-stopwatch ml-2"></i></a></td>
+                        <td><a th:href="@{/stopTimer/{id}(id=${taskLog.id})}" class="btn btn-primary"><i class="far fa-stop-circle ml-2"></i></a></td>
                     </tr>
                     </tbody>
                 </table>

@@ -25,9 +25,6 @@ public class TaskLog {
     @Column (name = "time_spent")
     private Integer timeSpent;
 
-    @Column (name = "in_progress")
-    private Boolean inProgress;
-
     public Integer getId() {
         return id;
     }
@@ -66,14 +63,6 @@ public class TaskLog {
 
     public void setTimeSpent(Integer timeSpent) {
         this.timeSpent = timeSpent;
-    }
-
-    public Boolean getInProgress() {
-        return inProgress;
-    }
-
-    public void setInProgress(Boolean inProgress) {
-        this.inProgress = inProgress;
     }
 
     public Task getTask() {
