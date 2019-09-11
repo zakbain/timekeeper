@@ -33,9 +33,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("user")
+                .withUser("jren")
                 .password(passwordEncoder().encode("password"))
                 .roles("USER")
+                .and()
+                .withUser("cmul")
+                .password(passwordEncoder().encode("password"))
+                .roles("blah")
                 .and()
                 .withUser("admin")
                 .password(passwordEncoder().encode("admin"))

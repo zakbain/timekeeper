@@ -1,8 +1,10 @@
 package com.zakbain.vacationer.controller;
 
 import com.zakbain.vacationer.model.TaskLog;
+import com.zakbain.vacationer.repository.EmployeeRepository;
 import com.zakbain.vacationer.repository.TaskLogRepository;
 import com.zakbain.vacationer.repository.TaskRepository;
+import com.zakbain.vacationer.util.TaskLogFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +21,15 @@ import java.util.Date;
 public class TaskLogController {
     private TaskLogRepository taskLogRepository;
     private TaskRepository taskRepository;
+    private final EmployeeRepository employeeRepository;
+    private TaskLogFilter taskLogFilter = new TaskLogFilter();
 
     @Autowired
-    public TaskLogController(TaskLogRepository taskLogRepository, TaskRepository taskRepository) {
+    public TaskLogController(TaskLogRepository taskLogRepository, TaskRepository taskRepository,
+                             EmployeeRepository employeeRepository) {
         this.taskLogRepository = taskLogRepository;
         this.taskRepository = taskRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @GetMapping("/createTaskLog")
@@ -38,8 +44,9 @@ public class TaskLogController {
             return "createTaskLog";
         }
 
+        taskLog.setEmployeeId(taskLogFilter.getLoggedInEmployeeId(employeeRepository));
         taskLogRepository.save(taskLog);
-        model.addAttribute("taskLogs", taskLogRepository.findAll());
+        model.addAttribute("taskLogs", taskLogFilter.getTasksForUser(employeeRepository, taskLogRepository));
         return "index";
     }
 
@@ -47,6 +54,8 @@ public class TaskLogController {
     public String showUpdateEvent(@PathVariable("id") Integer id, Model model) {
         TaskLog taskLog = taskLogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid TaskLog ID:" + id));
         model.addAttribute("taskLog", taskLog);
+        model.addAttribute("tasks", taskRepository.findAll());
+        model.addAttribute("taskLogs", taskLogFilter.getTasksForUser(employeeRepository, taskLogRepository));
         return "updateTaskLog";
     }
 
@@ -57,8 +66,9 @@ public class TaskLogController {
             return "updateTaskLog";
         }
 
+        taskLog.setEmployeeId(taskLogFilter.getLoggedInEmployeeId(employeeRepository));
         taskLogRepository.save(taskLog);
-        model.addAttribute("taskLogs", taskLogRepository.findAll());
+        model.addAttribute("taskLogs", taskLogFilter.getTasksForUser(employeeRepository, taskLogRepository));
         return "index";
     }
 
@@ -66,7 +76,7 @@ public class TaskLogController {
     public String deleteEvent(@PathVariable("id") Integer id, Model model) {
         TaskLog taskLog = taskLogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid TaskLog Id:" + id));
         taskLogRepository.delete(taskLog);
-        model.addAttribute("taskLogs", taskLogRepository.findAll());
+        model.addAttribute("taskLogs", taskLogFilter.getTasksForUser(employeeRepository, taskLogRepository));
         return "index";
     }
 
@@ -79,7 +89,7 @@ public class TaskLogController {
             taskLog.setStartedOn(new Date());
             taskLogRepository.save(taskLog);
         }
-        model.addAttribute("taskLogs", taskLogRepository.findAll());
+        model.addAttribute("taskLogs", taskLogFilter.getTasksForUser(employeeRepository, taskLogRepository));
         return "index";
     }
 
@@ -95,7 +105,7 @@ public class TaskLogController {
             taskLog.setTimeSpent(timeElapsed);
             taskLogRepository.save(taskLog);
         }
-        model.addAttribute("taskLogs", taskLogRepository.findAll());
+        model.addAttribute("taskLogs", taskLogFilter.getTasksForUser(employeeRepository, taskLogRepository));
         return "index";
     }
 }
