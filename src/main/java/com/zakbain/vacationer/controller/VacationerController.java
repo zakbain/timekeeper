@@ -15,11 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class VacationerController {
     private final TaskLogRepository taskLogRepository;
     private final EmployeeRepository employeeRepository;
+    private TaskLogFilter taskLogFilter = new TaskLogFilter();
 
     @Autowired
     public VacationerController(TaskLogRepository taskLogRepository, EmployeeRepository employeeRepository) {
         this.taskLogRepository = taskLogRepository;
         this.employeeRepository = employeeRepository;
+    }
+
+    public void setTaskLogFilter(TaskLogFilter taskLogFilter) {
+        this.taskLogFilter = taskLogFilter;
     }
 
     @RequestMapping("/login")
@@ -30,7 +35,7 @@ public class VacationerController {
     @RequestMapping({"/index", "/"})
     public String index(Model model) {
 
-        model.addAttribute("taskLogs", new TaskLogFilter().getTasksForUser(employeeRepository, taskLogRepository));
+        model.addAttribute("taskLogs", taskLogFilter.getTasksForUser(employeeRepository, taskLogRepository));
         return "index";
 
 
